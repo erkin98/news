@@ -2,11 +2,16 @@ version: '3'
 services:
   web:
     build: .
-    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - VIRTUAL_HOST=newsapid.az
+      - VIRTUAL_PORT=8030
+      - TIMEOUT=300
+      - HTTP_PORT=8030
+      - STATS_PORT=8031
     volumes:
       - .:/usr/src/app/
     ports:
-      - 8000:8000
+      - 8030:8030
     depends_on:
       - redis
 
@@ -45,3 +50,8 @@ services:
 
 volumes:
   postgres_data:
+
+networks:
+  default:
+    external:
+      name: nginx-proxy

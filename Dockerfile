@@ -25,7 +25,11 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
 
+
 # copy project
 COPY . /usr/src/app/
+EXPOSE 8030
 
-RUN python manage.py collectstatic --noinput 
+RUN if [ -f manage.py ]; then python manage.py collectstatic --noinput; fi
+
+CMD [ "uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]

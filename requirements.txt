@@ -58,3 +58,5 @@ wheel==0.37.1
 wrapt==1.14.0
 django-celery-results==2.3.0
 django-celery-beat==2.2.1
+uwsgi
+whitenoise
