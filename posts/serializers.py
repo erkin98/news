@@ -5,7 +5,15 @@ from . import models
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ("title", "author", "link", "created_at", "votes", "comments", "creator")
+        fields = (
+            "title",
+            "author",
+            "link",
+            "created_at",
+            "votes",
+            "comments",
+            "creator",
+        )
         model = models.Post
 
 
@@ -35,6 +43,5 @@ class CommentDetailSerializer(serializers.ModelSerializer):
 
     def get_replies(self, obj):
         return (
-            CommentSerializer(
-                obj.children(), many=True).data if obj.is_parent else None
+            CommentSerializer(obj.children(), many=True).data if obj.is_parent else None
         )

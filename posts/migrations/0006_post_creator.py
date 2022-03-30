@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('posts', '0005_comment_parent'),
+        ("posts", "0005_comment_parent"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='post',
-            name='creator',
-            field=models.CharField(default='me', max_length=50),
+            model_name="post",
+            name="creator",
+            field=models.CharField(default="me", max_length=50),
         ),
     ]

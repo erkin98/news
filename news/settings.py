@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-*84!+!l(0ko09cz-kd-of_*e2s94*2#&05xoore_n@a2vbm8d%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 PROD = not DEBUG
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -45,9 +45,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "posts",
-    'celery',  # Don't forget to add celery
-    'django_celery_results',  # celery result
-    'django_celery_beat',
+    "celery",  # Don't forget to add celery
+    "django_celery_results",  # celery result
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -130,7 +130,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+STATIC_ROOT = os.path.join(PROJECT_DIR, "static")
 STATIC_URL = "static/"
 
 # Default primary key field type

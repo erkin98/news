@@ -8,10 +8,10 @@ from .serializers import PostSerializer, CommentSerializer, CommentDetailSeriali
 
 class UpvoteView(APIView):
     def post(self, *args, **kwargs):
-        data = Post.objects.get(id=kwargs['pk'])
+        data = Post.objects.get(id=kwargs["pk"])
         data.votes += 1
         data.save()
-        return JsonResponse({'Succesfully upvoted': f'Article: {data.title}'})
+        return JsonResponse({"Succesfully upvoted": f"Article: {data.title}"})
 
 
 class ListCreatePostAPIView(ListCreateAPIView):
