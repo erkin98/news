@@ -26,4 +26,4 @@ We can test the API using [curl](https://curl.haxx.se/) or [httpie](https://gith
 
 [Link to Postman collection](https://solar-shuttle-540014.postman.co/workspace/673ad0b5-f79d-4d26-aca9-e37a9e6947af)
 
-[Link to Deployed API](http://64.225.98.124:8030/api/v1)
+[Link to Deployed API](http://64.225.98.124:8030/api/v1/posts/)
