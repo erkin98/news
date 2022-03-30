@@ -1,6 +1,17 @@
+from django.http import JsonResponse
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
+from rest_framework.views import APIView
+
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer, CommentDetailSerializer
+
+
+class UpvoteView(APIView):
+    def post(self, *args, **kwargs):
+        data = Post.objects.get(id=kwargs['pk'])
+        data.votes += 1
+        data.save()
+        return JsonResponse({'Succesfully upvoted': f'Article: {data.title}'})
 
 
 class ListCreatePostAPIView(ListCreateAPIView):

@@ -35,5 +35,6 @@ class CommentDetailSerializer(serializers.ModelSerializer):
 
     def get_replies(self, obj):
         return (
-            CommentSerializer(obj.children(), many=True).data if obj.is_parent else None
+            CommentSerializer(
+                obj.children(), many=True).data if obj.is_parent else None
         )

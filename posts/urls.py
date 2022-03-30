@@ -10,6 +10,11 @@ urlpatterns = [
         name="get_delete_update_post",
     ),
     path(
+        "posts/<int:pk>/upvote",
+        views.UpvoteView.as_view(),
+        name="get_delete_update_post",
+    ),
+    path(
         "posts/<int:pk>/comments/",
         views.ListCreateCommentAPIView.as_view(),
         name="get_post_comment",
