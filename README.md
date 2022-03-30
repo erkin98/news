@@ -24,6 +24,6 @@ Endpoint |HTTP Method | CRUD Method | Result
 ## Use
 We can test the API using [curl](https://curl.haxx.se/) or [httpie](https://github.com/jakubroztocil/httpie#installation), or we can use [Postman](https://www.postman.com/)
 
-[Link to Postman collection](https://solar-shuttle-540014.postman.co/workspace/Chatbot~673ad0b5-f79d-4d26-aca9-e37a9e6947af/overview)
+[Link to Postman collection](https://solar-shuttle-540014.postman.co/workspace/673ad0b5-f79d-4d26-aca9-e37a9e6947af)
 
 [Link to Deployed API](http://64.225.98.124:8030/api/v1)
