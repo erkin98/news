@@ -1,4 +1,6 @@
+from django.db.models import F
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from rest_framework.views import APIView
 
@@ -6,12 +8,25 @@ from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer, CommentDetailSerializer
 
 
+class PostScopedCommentMixin:
+    post_lookup_url_kwarg = "pk"
+
+    def get_post_id(self):
+        return self.kwargs[self.post_lookup_url_kwarg]
+
+    def get_base_queryset(self):
+        return Comment.objects.for_post(self.get_post_id())
+
+    def get_queryset(self):
+        return self.get_base_queryset().ordered()
+
+
 class UpvoteView(APIView):
     def post(self, *args, **kwargs):
-        data = Post.objects.get(id=kwargs["pk"])
-        data.votes += 1
-        data.save()
-        return JsonResponse({"Succesfully upvoted": f"Article: {data.title}"})
+        post_id = kwargs["pk"]
+        post = get_object_or_404(Post, pk=post_id)
+        Post.objects.filter(pk=post_id).update(votes=F("votes") + 1)
+        return JsonResponse({"Succesfully upvoted": f"Article: {post.title}"})
 
 
 class ListCreatePostAPIView(ListCreateAPIView):
@@ -27,41 +42,28 @@ class RetrieveUpdateDestroyPostAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
 
 
-class ListCreateCommentAPIView(ListCreateAPIView):
+class ListCreateCommentAPIView(PostScopedCommentMixin, ListCreateAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
 
     def get_queryset(self):
-        post_pk = self.kwargs["pk"]
-        return Comment.objects.filter(article_id=post_pk, parent=None).order_by(
-            "created_at"
-        )
+        return self.get_base_queryset().roots().ordered()
 
     def perform_create(self, serializer):
-        serializer.save(creator=self.request.user)
+        serializer.save(article_id=self.get_post_id())
 
 
-class RetrieveUpdateDestroyCommentAPIView(RetrieveUpdateDestroyAPIView):
+class RetrieveUpdateDestroyCommentAPIView(
+    PostScopedCommentMixin, RetrieveUpdateDestroyAPIView
+):
+    post_lookup_url_kwarg = "id"
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
 
-    def get_queryset(self):
-        post_id = self.kwargs["id"]
-        comment_pk = self.kwargs["pk"]
 
-        return Comment.objects.filter(id=comment_pk, article_id=post_id).order_by(
-            "created_at"
-        )
-
-
-class RetrieveUpdateDestroyCommentReplyAPIView(RetrieveUpdateDestroyAPIView):
+class RetrieveUpdateDestroyCommentReplyAPIView(
+    PostScopedCommentMixin, RetrieveUpdateDestroyAPIView
+):
+    post_lookup_url_kwarg = "id"
     serializer_class = CommentDetailSerializer
     queryset = Comment.objects.all()
-
-    def get_queryset(self):
-        post_id = self.kwargs["id"]
-        comment_pk = self.kwargs["pk"]
-
-        return Comment.objects.filter(id=comment_pk, article_id=post_id).order_by(
-            "created_at"
-        )
