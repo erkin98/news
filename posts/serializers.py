@@ -23,6 +23,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ("content", "created_at", "author", "article", "reply_count")
         model = models.Comment
+        extra_kwargs = {"article": {"read_only": True}}
 
     def get_reply_count(self, obj):
         return obj.children().count() if obj.is_parent else 0
